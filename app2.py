@@ -76,13 +76,16 @@ def vector_embeddings():
 def vector_embeddings_from_local():
     st.session_state.vectors = FAISS.load_local("faiss_index_large_roofing_docs",embeddings,allow_dangerous_deserialization=True)
 
+st.write("Loading data ... Please wait...")
+vector_embeddings_from_local()
+st.write("Loading completed ...")
 
 prompt1=st.text_input("Enter your question from the document")
 
-if st.button("Documents Embedding"):
-    vector_embeddings_from_local()
-    #vector_embeddings()
-    st.write("Vector Store DB is ready (from local index)")
+#if st.button("Documents Embedding"):
+#    vector_embeddings_from_local()
+#    #vector_embeddings()
+#   st.write("Vector Store DB is ready (from local index)"
 
 
 
