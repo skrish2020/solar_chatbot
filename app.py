@@ -23,7 +23,7 @@ load_dotenv()
 os.environ['OPENAI_API_KEY'] = os.getenv("OPENAI_API_KEY")
 groq_api_key = os.getenv('GROQ_API_KEY')
 
-st.title("Ask me \n Please note: I am an AI agent answering roofing questions using LLMs! \n" 
+st.title("Ask me \n Please note: I am an AI agent answering delicious recipe questions using LLMs! \n" 
 + "I am a rookie. Please pardon my mistake(s) if any!")
 
 llm = ChatGroq(groq_api_key=groq_api_key,
@@ -54,13 +54,14 @@ def vector_embeddings():
         #st.session_state.embeddings=OpenAIEmbeddings()
         st.session_state.embeddings=embeddings
         #"C:\Users\SKris\langchain\roofing_poc\roofing_docs2"
-        pdfloader = PyPDFDirectoryLoader("/Users/SKris/langchain/roofing_poc/roofing_docs") ##Data ingestion
-        #webbaseloader = WebBaseLoader("https://docs.smith.langchain.com/user_guide")
-        #htmlloader=DirectoryLoader("../ea_files/html",glob="**/*.mhtml",loader_cls=BSHTMLLoader)
+       # C:\Users\SKris\langchain\hl_shakes_chatbot\hl_shake_recipes
+        pdfloader = PyPDFDirectoryLoader("/Users/SKris/langchain/hl_shakes_chatbot/hl_shake_recipes/pdf") ##Data ingestion
+        #webbaseloader = WebBaseLoader("/Users/SKris/langchain/hl_shakes_chatbot/hl_shake_recipes/html")
+        htmlloader=DirectoryLoader("/Users/SKris/langchain/hl_shakes_chatbot/hl_shake_recipes/html",glob="**/*.mhtml",loader_cls=BSHTMLLoader)
         #docs=htmlloader.load()
         #print(docs)
-        #st.session_state.loader = MergedDataLoader(loaders=[pdfloader, htmlloader])
-        st.session_state.loader = MergedDataLoader(loaders=[pdfloader])
+        st.session_state.loader = MergedDataLoader(loaders=[pdfloader, htmlloader])
+        #st.session_state.loader = MergedDataLoader(loaders=[pdfloader])
         st.session_state.docs=st.session_state.loader.load() ## doc loading
         ##chunk creation
         st.session_state.text_splitter=RecursiveCharacterTextSplitter(chunk_size=1000,chunk_overlap=200)
@@ -71,7 +72,7 @@ def vector_embeddings():
        #     st.session_state.final_documents,st.session_state.embeddings)
         st.session_state.vectors=FAISS.from_documents(
             st.session_state.final_documents,embeddings)
-        st.session_state.vectors.save_local("faiss_index_large_roofing_docs")
+        st.session_state.vectors.save_local("faiss_index_hl_shake_recipes")
       
 
 

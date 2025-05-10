@@ -23,9 +23,8 @@ load_dotenv()
 os.environ['OPENAI_API_KEY'] = os.getenv("OPENAI_API_KEY")
 groq_api_key = os.getenv('GROQ_API_KEY')
 
-st.title("Ask me \n Please note: I am an AI agent answering roofing questions using LLMs! \n" 
+st.title("Ask me \n Please note: I am an AI agent answering delicious recipe questions using LLMs! \n" 
 + "I am a rookie. Please pardon my mistake(s) if any!")
-
 llm = ChatGroq(groq_api_key=groq_api_key,
                #model_name="Llama3-8b-8192")
                 model_name="gemma2-9b-it")
@@ -74,7 +73,7 @@ def vector_embeddings():
       
 
 def vector_embeddings_from_local():
-    st.session_state.vectors = FAISS.load_local("faiss_index_large_roofing_docs",embeddings,allow_dangerous_deserialization=True)
+    st.session_state.vectors = FAISS.load_local("faiss_index_hl_shake_recipes",embeddings,allow_dangerous_deserialization=True)
 
 st.write("Loading data ... Please wait...")
 vector_embeddings_from_local()
