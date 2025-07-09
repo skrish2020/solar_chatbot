@@ -19,6 +19,16 @@ import time
 from dotenv import load_dotenv
 load_dotenv()
 
+import sys
+
+arg = None
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        arg = sys.argv[1]
+        print(f"argument passed: {arg}")
+    else:
+        print("NO ARGUMENTS!")
+
 ##load groq and openai api keys
 os.environ['OPENAI_API_KEY'] = os.getenv("OPENAI_API_KEY")
 groq_api_key = os.getenv('GROQ_API_KEY')
@@ -58,9 +68,12 @@ def vector_embeddings():
         pdfloader = PyPDFDirectoryLoader("/Users/SKris/vscode/langchain/solar_chatbot/solar_docs/pdf") ##Data ingestion
         #webbaseloader = WebBaseLoader("/Users/SKris/langchain/hl_shakes_chatbot/hl_shake_recipes/html")
         htmlloader=DirectoryLoader("/Users/SKris/vscode/langchain/solar_chatbot/solar_docs/html",glob="**/*.mhtml",loader_cls=BSHTMLLoader)
+        st.session_state.loader = MergedDataLoader(loaders=[pdfloader, htmlloader])
+        st.session_state.docs=st.session_state.loader.load() ## doc loading
+
         #docs=htmlloader.load()
         #print(docs)s
-        st.session_state.docs=st.session_state.loader.load() ## doc loading
+        #st.session_state.docs=st.session_state.loader.load() ## doc loading
         ##chunk creation
         st.session_state.text_splitter=RecursiveCharacterTextSplitter(chunk_size=1000,chunk_overlap=200)
         #text splitting
@@ -70,15 +83,17 @@ def vector_embeddings():
        #     st.session_state.final_documents,st.session_state.embeddings)
         st.session_state.vectors=FAISS.from_documents(
             st.session_state.final_documents,embeddings)
-        st.session_state.vectors.save_local("faiss_index_hl_shake_recipes")
+        st.session_state.vectors.save_local("faiss_index_solar_chatbot")
       
 
 
 prompt1=st.text_input("Enter your question from the document")
 
-if st.button("Documents Embedding"):
-    vector_embeddings()
-    st.write("Vector Store DB is ready")
+if arg == "load":
+    if st.button("Documents Embedding"):
+        vector_embeddings()
+        st.write("Vector Store DB is ready")
+
 
 
 

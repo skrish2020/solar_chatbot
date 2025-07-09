@@ -27,3 +27,4 @@ openai
 torch
 langchain
 langchain_chroma
+huggingface_hub[hf_xet]
