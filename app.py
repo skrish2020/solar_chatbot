@@ -47,6 +47,8 @@ Answer the questions based on the provided context only.
 Please use only the material provided to base your answer. 
 Do to include any external material. 
 Please be precise. Please do not include these words:"Based on the provided context"
+Do not provide any general information or knowledge.
+If you do not know the answer, please say "I don't know".
 Please provide the most accurate response based on the question
 <context>
 {context}
@@ -87,16 +89,20 @@ def vector_embeddings():
       
 
 
-prompt1=st.text_input("Enter your question from the document")
+
+def vector_embeddings_from_local():
+    st.session_state.vectors = FAISS.load_local("faiss_index_solar_chatbot",embeddings,allow_dangerous_deserialization=True)
 
 if arg == "load":
     if st.button("Documents Embedding"):
         vector_embeddings()
         st.write("Vector Store DB is ready")
+else:
+    st.write("Loading data ... Please wait...")
+    vector_embeddings_from_local()
+    st.write("Loading completed ...")
 
-
-
-
+prompt1=st.text_input("Enter your question from the document")
 if prompt1:
     start=time.process_time()
     document_chain = create_stuff_documents_chain(llm, prompt)
